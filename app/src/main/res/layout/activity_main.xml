@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.baofeng.soulrelay.MainActivity">
+
+    <ImageView
+        android:id="@+id/iv_normal"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/bg_default_video_common_small" />
+
+    <ImageView
+        android:id="@+id/iv_gif"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/iv_normal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/bg_default_video_common_small" />
+
+    <ImageView
+        android:id="@+id/iv_gif1"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/iv_gif"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/bg_default_video_common_small" />
+</RelativeLayout>
