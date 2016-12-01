@@ -9,6 +9,10 @@ import com.baofeng.soulrelay.utils.imageloader.ImageLoaderUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 图片加载库的封装演示案例
+ * Created by soulrelay on 2016/12/11 19:18
+ */
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_normal)
