@@ -2,6 +2,7 @@
 >* 图片加载是Android开发中最最基础的功能，为了降低开发周期和难度，我们经常会选用一些图片加载的开源库
 >* [选取第三方SDK需要谨慎](http://blog.csdn.net/s003603u/article/details/53257859)
 >* [二次封装](http://blog.csdn.net/s003603u/article/details/53257965)
+
 ## <font color=#C4573C size=5 face="黑体">主流图片加载库的对比</font>
 >* 共同点
    * 使用简单：一句话实现图片的获取和显示
@@ -11,6 +12,7 @@
    * 支持多种数据源
    * 支持多种Displayer
    * 兼容性好（可以配合okhttp等库进行使用）
+   
 ### <font color=#ff9866 size=4 face="黑体">Android-Universal-Image-Loader</font>
 >* 简介
       * 作者：nostra13
