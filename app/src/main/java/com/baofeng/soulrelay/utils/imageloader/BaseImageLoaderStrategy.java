@@ -26,6 +26,7 @@ public interface BaseImageLoaderStrategy {
 
     void loadGifWithProgress(String url, ImageView imageView, ProgressLoadListener listener);
 
+    void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener);
     //清除硬盘缓存
     void clearImageDiskCache(final Context context);
     //清除内存缓存

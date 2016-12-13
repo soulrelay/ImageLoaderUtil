@@ -69,6 +69,10 @@ public class ImageLoaderUtil {
         mStrategy.loadGifWithProgress(url,imageView,listener);
     }
 
+    public void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener) {
+        mStrategy.loadGifWithPrepareCall(url,imageView,listener);
+    }
+
     /**
      * 策略模式的注入操作
      *

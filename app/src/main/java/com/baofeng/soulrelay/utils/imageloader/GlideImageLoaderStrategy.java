@@ -110,6 +110,25 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
     }
 
     @Override
+    public void loadGifWithPrepareCall(String url, ImageView imageView, final SourceReadyListener listener) {
+        Glide.with(imageView.getContext()).load(url).asGif().dontAnimate()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).
+                listener(new RequestListener<String, GifDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        listener.onResourceReady(resource.getIntrinsicWidth(),resource.getIntrinsicHeight());
+                        return false;
+                    }
+                }).into(imageView);
+    }
+
+    @Override
     public void clearImageDiskCache(final Context context) {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) {
