@@ -93,7 +93,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                     }
                 });
             }
-        })).load(url).asGif().skipMemoryCache(true).dontAnimate().
+        })).load(url).asGif().skipMemoryCache(true).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).
                 listener(new RequestListener<String, GifDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
