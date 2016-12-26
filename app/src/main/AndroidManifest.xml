@@ -10,6 +10,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- 自定义GlideModule -->
+        <meta-data
+            android:name="com.baofeng.soulrelay.utils.imageloader.MyGlideModule"
+            android:value="GlideModule" />
+        <!-- 自定义GlideModule -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
