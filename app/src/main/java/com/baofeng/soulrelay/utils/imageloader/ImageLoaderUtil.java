@@ -61,6 +61,10 @@ public class ImageLoaderUtil {
         mStrategy.loadImage(url, imageView);
     }
 
+    public void loadImageWithAppCxt(String url, ImageView imageView) {
+        mStrategy.loadImageWithAppCxt(url,imageView);
+    }
+
     public void loadImageWithProgress(String url, ImageView imageView, ProgressLoadListener listener) {
         mStrategy.loadImageWithProgress(url,imageView,listener);
     }

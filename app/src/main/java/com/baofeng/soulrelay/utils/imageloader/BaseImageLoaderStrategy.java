@@ -15,6 +15,8 @@ import com.baofeng.soulrelay.utils.imageloader.glideprogress.ProgressLoadListene
 public interface BaseImageLoaderStrategy {
     //无占位图
     void loadImage(String url, ImageView imageView);
+    //这里的context指定为ApplicationContext
+    void loadImageWithAppCxt(String url, ImageView imageView);
 
     void loadImage(String url, int placeholder, ImageView imageView);
 

@@ -49,6 +49,14 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
     }
 
     @Override
+    public void loadImageWithAppCxt(String url, ImageView imageView) {
+        Glide.with(imageView.getContext().getApplicationContext()).load(url).dontAnimate()
+                .placeholder(imageView.getDrawable())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+    }
+
+    @Override
     public void loadGifImage(String url, int placeholder, ImageView imageView) {
         loadGif(imageView.getContext(), url, placeholder, imageView);
     }
