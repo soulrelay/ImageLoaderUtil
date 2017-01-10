@@ -73,34 +73,6 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                     }
                 });
             }
-        })).load(url).asBitmap().dontAnimate().
-                listener(new RequestListener<Object, Bitmap>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        listener.onException();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        listener.onResourceReady();
-                        return false;
-                    }
-                }).into(imageView);
-    }
-
-    @Override
-    public void loadGifWithProgress(String url, final ImageView imageView, final ProgressLoadListener listener) {
-        Glide.with(imageView.getContext()).using(new ProgressModelLoader(new ProgressUIListener() {
-            @Override
-            public void update(final int bytesRead, final int contentLength) {
-                imageView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.update(bytesRead, contentLength);
-                    }
-                });
-            }
         })).load(url).skipMemoryCache(true).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).
                 listener(new RequestListener<String, GlideDrawable>() {
                     @Override

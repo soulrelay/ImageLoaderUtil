@@ -69,10 +69,6 @@ public class ImageLoaderUtil {
         mStrategy.loadImageWithProgress(url,imageView,listener);
     }
 
-    public void loadGifWithProgress(String url, ImageView imageView, ProgressLoadListener listener) {
-        mStrategy.loadGifWithProgress(url,imageView,listener);
-    }
-
     public void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener) {
         mStrategy.loadGifWithPrepareCall(url,imageView,listener);
     }
