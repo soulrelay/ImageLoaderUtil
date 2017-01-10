@@ -128,5 +128,7 @@ public class ImageLoaderUtil {
         return mStrategy.getCacheSize(context);
     }
 
-
+    public void saveImage(Context context, String url, String savePath, String saveFileName, ImageSaveListener listener) {
+        mStrategy.saveImage(context, url, savePath, saveFileName, listener);
+    }
 }
