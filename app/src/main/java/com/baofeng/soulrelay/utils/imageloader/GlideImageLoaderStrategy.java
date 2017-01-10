@@ -1,8 +1,12 @@
 package com.baofeng.soulrelay.utils.imageloader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.baofeng.soulrelay.utils.CommonUtils;
@@ -15,6 +19,13 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
@@ -151,6 +162,57 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public void saveImage(Context context, String url, String savePath, String saveFileName, ImageSaveListener listener) {
+        if (!CommonUtils.isSDCardExsit() || TextUtils.isEmpty(url)) {
+            listener.onSaveFail();
+            return;
+        }
+        InputStream fromStream = null;
+        OutputStream toStream = null;
+        try {
+            File cacheFile = Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+            if (cacheFile == null || !cacheFile.exists()) {
+                listener.onSaveFail();
+                return;
+            }
+            File dir = new File(savePath);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File file = new File(dir, saveFileName + CommonUtils.getPicType(cacheFile.getAbsolutePath()));
+
+            fromStream = new FileInputStream(cacheFile);
+            toStream = new FileOutputStream(file);
+            byte length[] = new byte[1024];
+            int count;
+            while ((count = fromStream.read(length)) > 0) {
+                toStream.write(length, 0, count);
+            }
+            //用广播通知相册进行更新相册
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(file);
+            intent.setData(uri);
+            context.sendBroadcast(intent);
+            listener.onSaveSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            listener.onSaveFail();
+        } finally {
+            if (fromStream != null) {
+                try {
+                    fromStream.close();
+                    toStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    fromStream = null;
+                    toStream = null;
+                }
+            }
+        }
+
     }
 
     /**

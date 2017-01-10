@@ -1,6 +1,10 @@
 
 package com.baofeng.soulrelay.utils;
 
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.text.TextUtils;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -62,6 +66,32 @@ public class CommonUtils {
         BigDecimal result4 = new BigDecimal(teraBytes);
 
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
+    }
+
+    public static String getPicType(String pathName) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+        String type = options.outMimeType;
+        if (!TextUtils.isEmpty(type)) {
+            try {
+                type = type.substring(6, type.length());
+                if ("gif".equals(type)) {
+                    return ".gif";
+                }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        return ".jpg";
+    }
+
+    public static boolean isSDCardExsit() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
 

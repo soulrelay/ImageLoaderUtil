@@ -36,4 +36,6 @@ public interface BaseImageLoaderStrategy {
     //获取缓存大小
     String getCacheSize(Context context);
 
+    void saveImage(Context context,String url,String savePath,String saveFileName,ImageSaveListener listener);
+
 }
