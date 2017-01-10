@@ -2,8 +2,8 @@
 >* 图片加载是Android开发中最最基础的功能，为了降低开发周期和难度，我们经常会选用一些图片加载的开源库
 >* [选取第三方SDK需要谨慎](http://blog.csdn.net/s003603u/article/details/53257859)
 >* [二次封装](http://blog.csdn.net/s003603u/article/details/53257965)
->* [博客地址](http://blog.csdn.net/s003603u)
 
+<font color=#ff9866 size=4 face="黑体">注意：所有改动更新会同步到</font>[GitHub](https://github.com/soulrelay/ImageLoaderUtil)
 ## <font color=#C4573C size=5 face="黑体">主流图片加载库的对比</font>
 >* 共同点
    * 使用简单：一句话实现图片的获取和显示
@@ -13,7 +13,6 @@
    * 支持多种数据源
    * 支持多种Displayer
    * 兼容性好（可以配合okhttp等库进行使用）
-   
 ### <font color=#ff9866 size=4 face="黑体">Android-Universal-Image-Loader</font>
 >* 简介
       * 作者：nostra13
@@ -516,6 +515,276 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
 }
 
 ```
+## <font color=#C4573C size=5 face="黑体">源码地址</font>
+[ImageLoaderUtil](https://github.com/soulrelay/ImageLoaderUtil)
+
+## <font color=#C4573C size=5 face="黑体">部分参考链接</font>
+[http://www.jianshu.com/p/97994c9693f9](http://www.jianshu.com/p/97994c9693f9)
+[https://www.zhihu.com/question/37804956](https://www.zhihu.com/question/37804956)
+[http://www.jianshu.com/p/e26130a93289](http://www.jianshu.com/p/e26130a93289)
+[http://www.cnblogs.com/android-blogs/p/5737611.html](http://www.cnblogs.com/android-blogs/p/5737611.html)
+## <font color=#C4573C size=5 face="黑体">更新</font>
+
+### <font color=#ff9866 size=4 face="黑体">2016-12-09 ll You must not call setTag() on a view Glide is targeting</font>
 
 
 
+项目中在使用Glide图片加载框架时遇到该错误
+报错原因大致是因为Glide加载的iamgeView调用了setTag()方法导致的错误，因为Glide已经默认为ImageView设置的Tag
+
+相关解决方案已经在Glide 3.6.0[（issue #370）](https://github.com/bumptech/glide/issues/370)被引进，实测可行
+在AndroidManifest.xml中加入
+
+```
+<application
+        android:name=".App">
+```
+然后在App中添加如下代码：
+
+```
+public class App extends Application {
+    @Override public void onCreate() {
+        super.onCreate();
+        ViewTarget.setTagId(R.id.glide_tag);
+    }
+}
+```
+在src/main/values/ids.xml添加如下代码：
+
+```
+<resources>
+    <item type="id" name="glide_tag" />
+</resources>
+```
+
+
+### <font color=#ff9866 size=4 face="黑体">2016-12-13 ll  添加loadGifWithPrepareCall方法</font>
+2016.12.13
+
+只想知道图片是否准备完毕（包括来自网络或者sdcard），区别于loadImageWithProgress和loadGifWithProgress的进度回调
+
+Tips：使用Glide加载图片注意ImageView的Scaletype的设置
+```
+public interface BaseImageLoaderStrategy {
+    void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener);
+}
+```
+
+```
+public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
+
+       @Override
+    public void loadGifWithPrepareCall(String url, ImageView imageView, final SourceReadyListener listener) {
+        Glide.with(imageView.getContext()).load(url).asGif().dontAnimate()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).
+                listener(new RequestListener<String, GifDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        listener.onResourceReady(resource.getIntrinsicWidth(),resource.getIntrinsicHeight());
+                        return false;
+                    }
+                }).into(imageView);
+    }
+}
+
+```
+
+```
+public class ImageLoaderUtil {
+ public void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener) {
+        mStrategy.loadGifWithPrepareCall(url,imageView,listener);
+    }
+}
+```
+### <font color=#ff9866 size=4 face="黑体">2016-12-26 ll  更新loadGifWithProgress方法  </font>
+#### <font color=#ff9866 size=4 face="黑体">2017-1-10 ll  统一加载图片进度回调方法为loadImageWithProgress，弃用并删除loadGifWithProgress方法 </font>
+具体细节查看GitHub最新代码
+### <font color=#ff9866 size=3 face="黑体">2016-12-26 ll  自定义GlideModule 并将 Glide与okhttp3集成 </font>
+ 1.自定义一个GlideModule 
+```
+/**
+ * DES：自定义一个GlideModule
+ * <p>
+ * GlideModule 是一个抽象方法，全局改变 Glide 行为的一个方式，
+ * 通过全局GlideModule 配置Glide，用GlideBuilder设置选项，用Glide注册ModelLoader等。
+ * <p>
+ */
+public class MyGlideModule implements GlideModule {
+    @Override
+    public void applyOptions(Context context, GlideBuilder builder) {
+        // Apply options to the builder here.
+        int maxMemory = (int) Runtime.getRuntime().maxMemory();//获取系统分配给应用的总内存大小
+        int memoryCacheSize = maxMemory / 8;//设置图片内存缓存占用八分之一
+        //设置内存缓存大小
+        builder.setMemoryCache(new LruResourceCache(memoryCacheSize));
+        builder.setBitmapPool(new LruBitmapPool(memoryCacheSize));
+    }
+
+    @Override
+    public void registerComponents(Context context, Glide glide) {
+        // register ModelLoaders here.
+    }
+}
+```
+  2.AndroidManifest.xml注册
+```
+<manifest ...>
+    <!-- ... permissions -->
+    <application ...>
+             <!-- 自定义GlideModule -->
+        <meta-data
+            android:name="com.baofeng.soulrelay.utils.imageloader.MyGlideModule"
+            android:value="GlideModule" />
+        <!-- 自定义GlideModule -->
+        <!-- ... activities and other components -->
+    </application>
+</manifest>
+```
+3、 Glide与OkHttp3集成
+
+```
+   compile 'com.squareup.okhttp3:okhttp:3.4.2'
+   compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+```
+4、添加混淆处理
+
+```
+#--------------------Glide-----------------------#
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+-keepnames class com.baofeng.soulrelay.utils.imageloader.MyGlideModule
+# or more generally:
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+
+#--------------------Glide-----------------------#
+```
+
+### <font color=#ff9866 size=4 face="黑体">2017-1-6 ll  GIF帧显示不完全 2017-1-10补充说明PS</font>
+相关问题在[issues1649](https://github.com/bumptech/glide/issues/1649)中被提到和解决（目前glide:3.7.0的确存在这个问题）
+具体解决方法是：
+ glide:3.8.0-SNAPSHOT修复了关于GIF展示的一些bug，实测可用
+ Gradle配置修改如下：
+ >* Add the snapshot repo to your list of repositories:
+```
+repositories {
+  jcenter()
+  maven {
+    name 'glide-snapshot'
+    url 'http://oss.sonatype.org/content/repositories/snapshots'
+  }
+}
+```
+
+
+>* And then change your dependencies to the v3 snapshot version:
+
+```
+dependencies {
+  compile 'com.github.bumptech.glide:glide:3.8.0-SNAPSHOT'
+  compile 'com.github.bumptech.glide:okhttp-integration:1.5.0-SNAPSHOT'
+}
+```
+#### <font color=#ff9866 size=3 face="黑体">2017-1-10补充说明PS</font>
+PS：提供一个gif图 帧提取工具[GIFFrame.exe](http://download.csdn.net/detail/s003603u/9733492)
+据我分析，那些没有显示完整的GIF图片，里面的部分帧图片本身就不是完整的，但是之前的Glide并没有做很好的处理，所以显示效果有缺陷，当然最新的3.8.0-SNAPSHOT解决了这个问题，但是在显示的时候仍有瑕疵（有一些重叠，当然我觉得这也跟gif图的做工有关）
+### <font color=#ff9866 size=4 face="黑体">2017-1-6 ll  You cannot start a load for a destroyed activity</font>
+完整异常信息：
+```
+FATAL EXCEPTION: main
+Process: com.sports.baofeng, PID: 9170
+java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+at com.bumptech.glide.d.k.b(SourceFile:134)
+at com.bumptech.glide.d.k.a(SourceFile:102)
+at com.bumptech.glide.d.k.a(SourceFile:87)
+at com.bumptech.glide.i.c(SourceFile:629)
+at com.storm.durian.common.utils.imageloader.b.a(SourceFile:1194)
+at com.storm.durian.common.utils.imageloader.c.a(SourceFile:52)
+at com.sports.baofeng.specialtopic.SpecialTopicDetailFixActivity.a(SourceFile:311)
+at com.sports.baofeng.specialtopic.SpecialTopicDetailFixActivity.a(SourceFile:1347)
+at com.sports.baofeng.specialtopic.d.a(SourceFile:1052)
+at com.sports.baofeng.specialtopic.c$1.a(SourceFile:1064)
+at com.storm.durian.common.b.b$1.onPostExecute(SourceFile:57)
+at android.os.AsyncTask.finish(AsyncTask.java:651)
+at android.os.AsyncTask.access$500(AsyncTask.java:180)
+at android.os.AsyncTask$InternalHandler.handleMessage(AsyncTask.java:668)
+at android.os.Handler.dispatchMessage(Handler.java:102)
+at android.os.Looper.loop(Looper.java:158)
+at android.app.ActivityThread.main(ActivityThread.java:7225)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1230)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1120)
+
+```
+以上异常出现的几率为random
+初步分析原因是：进入页面然后又迅速退出，导致AsyncTask中的onPostExecute在调用Glide加载图片时出现如上异常，当然也跟对AsyncTask的管理有关
+同样的问题参考[issues138](https://github.com/bumptech/glide/issues/138)
+简单的摘要：
+
+> you fire an async task and then finish() in which case you just need to pass getApplicationContext instead of this when creating the callback/asynctask
+
+按照上面这个理解的话，如果是在AsyncTask中的onPostExecute执行时
+调用Glide加载图片，context最好使用ApplicationContext
+
+对[ImageLoaderUtil](https://github.com/soulrelay/ImageLoaderUtil)做如下更新，添加方法
+>* BaseImageLoaderStrategy
+```
+ //这里的context指定为ApplicationContext
+    void loadImageWithAppCxt(String url, ImageView imageView);
+```
+
+>* GlideImageLoaderStrategy
+```
+  @Override
+    public void loadImageWithAppCxt(String url, ImageView imageView) {
+        Glide.with(imageView.getContext().getApplicationContext()).load(url).dontAnimate()
+                .placeholder(imageView.getDrawable())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+    }
+```
+>* ImageLoaderUtil
+```
+ public void loadImageWithAppCxt(String url, ImageView imageView) {
+        mStrategy.loadImageWithAppCxt(url,imageView);
+    }
+```
+
+### <font color=#ff9866 size=4 face="黑体">2017-1-10 ll  简单说说图片适配的问题</font>
+过多的概念不赘述，可以先参考[Android屏幕适配全攻略(最权威的官方适配指导)](http://blog.csdn.net/zhaokaiqiang1992/article/details/45419023)
+这里主要描述一种现象，明白的话自然觉得很简单！
+
+```
+    <ImageView
+                android:id="@+id/iv_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                 />
+```
+假设现在要加载一张200px * 200px的GIF图片（图片基于1280 * 720），这张图片的宽高设置为wrap_content，如果在1920 * 1080分辨率的手机上显示，相对于1280 * 720（假设屏幕尺寸相同），在视觉效果上会显得小，这其实是Android系统基于手机像素密度的一种自适配，单一变化条件下，1920 * 1080分辨率的手机的像素密度是1280 * 720的1.5倍
+假设如果系统的自适配让你觉得在高分辨率手机上显得图片过小（像素密度高，200个像素显示起来就比较挤），可以通过自己的计算来改变这种现象
+ImageLoaderUtil提供如下加载成功回调的方法（并且会把图片的宽高告诉你）：这里有个参数设置，看需求来计算，粗略点可以只使用宽度比例来算，如下面的例子显示，参数为AppParams.screenWidth / 720，当然也可以获取屏幕密度，1920 * 1080的屏幕密度为3，1280 * 720的为2，所以参数可以设置为AppParams.density/2（在两种分辨率上看着视觉上一样）
+
+```
+    ImageLoaderUtil.getInstance().loadGifWithPrepareCall(url, mImageView, new SourceReadyListener() {
+                @Override
+                public void onResourceReady(int width, int height) {
+                    ViewGroup.LayoutParams params = mImageView.getLayoutParams();
+                      params.height = height * AppParams.screenWidth / 720;
+                    params.width = width * AppParams.screenWidth / 720;
+                    mImageView.setLayoutParams(params);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+```
