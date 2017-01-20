@@ -1,3 +1,4 @@
+[TOC]
 ## <font color=#C4573C size=5 face="黑体">前言</font>
 >* 图片加载是Android开发中最最基础的功能，为了降低开发周期和难度，我们经常会选用一些图片加载的开源库
 >* [选取第三方SDK需要谨慎](http://blog.csdn.net/s003603u/article/details/53257859)
@@ -788,3 +789,39 @@ ImageLoaderUtil提供如下加载成功回调的方法（并且会把图片的�
                 }
             });
 ```
+
+### <font color=#ff9866 size=4 face="黑体">2017-1-10 ll  添加saveImage方法，实现图片的本地自定义保存功能</font>
+已同步到[GitHub ImageLoaderUtil](https://github.com/soulrelay/ImageLoaderUtil)
+>* ImageLoaderUtil相关接口：
+
+```
+  /**
+     * @param context
+     * @param url 图片url
+     * @param savePath 保存路径
+     * @param saveFileName 保存文件名
+     * @param listener 文件保存成功与否的监听器
+     */
+ public void saveImage(Context context, String url, String savePath, String saveFileName, ImageSaveListener listener) {
+        mStrategy.saveImage(context, url, savePath, saveFileName, listener);
+    }
+```
+
+>*  在工作线程中调用示例如下：
+
+```
+ImageLoaderUtil.getInstance().saveImage(getActivity(), url,
+                        Environment.getExternalStorageDirectory().getAbsolutePath() + "/bfsports",
+                        "bfsports" + System.currentTimeMillis(), new ImageSaveListener() {
+                            @Override
+                            public void onSaveSuccess() {
+                                handler.obtainMessage(MSG_PIC_SAVE_SUCC).sendToTarget();
+                            }
+
+                            @Override
+                            public void onSaveFail() {
+                                handler.obtainMessage(MSG_PIC_SAVE_FAIL).sendToTarget();
+                            }
+                        });
+```
+
