@@ -1,3 +1,15 @@
+# <font color=#C4573C size=5 face="黑体">重磅更新</font>
+使用ImageLoaderUtil实现一个真正意义的图集功能，持续完善和更新中
+
+[Gallery](https://github.com/soulrelay/Gallery)
+
+[Gallery](https://github.com/soulrelay/Gallery)
+
+[Gallery](https://github.com/soulrelay/Gallery)
+
+重要的东西贴三遍！
+
+
 ![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/catalog.png)
 
 ## <font color=#C4573C size=5 face="黑体">前言</font>
