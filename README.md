@@ -839,3 +839,7 @@ ImageLoaderUtil.getInstance().saveImage(getActivity(), url,
                         });
 ```
 
+### <font color=#ff9866 size=4 face="黑体">2017-03-08 ll   Glide圆形图片加载封装
+>* 之前加载圆形图片，一般都是采用自定义的CircleImageview。后来开始使用Glide加载图片，期间遇到Glide和CircleImageview使用冲突的问题（如：有的图片第一次加载的时候只显示占位图，第二次才显示正常的图片，以及CircleImageview带来的崩溃问题），当时采用了一个牺牲动画效果的解决方案
+>* 既然已经全面使用Glide，那么就尽量基于Glide来完成加载圆形图片的方案
+>* 具体方案请参考[Glide圆形图片加载封装](http://blog.csdn.net/s003603u/article/details/60880308)
