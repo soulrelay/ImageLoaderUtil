@@ -2,8 +2,6 @@ package com.baofeng.soulrelay.utils.imageloader;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -13,6 +11,9 @@ import com.baofeng.soulrelay.utils.CommonUtils;
 import com.baofeng.soulrelay.utils.imageloader.glideprogress.ProgressLoadListener;
 import com.baofeng.soulrelay.utils.imageloader.glideprogress.ProgressModelLoader;
 import com.baofeng.soulrelay.utils.imageloader.glideprogress.ProgressUIListener;
+import com.baofeng.soulrelay.utils.imageloader.listener.ImageSaveListener;
+import com.baofeng.soulrelay.utils.imageloader.listener.SourceReadyListener;
+import com.baofeng.soulrelay.utils.imageloader.transformation.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -53,15 +54,29 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
      */
     @Override
     public void loadImage(String url, ImageView imageView) {
-        Glide.with(imageView.getContext()).load(url).dontAnimate()
+        Glide.with(imageView.getContext()).load(url)
                 .placeholder(imageView.getDrawable())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
     }
 
     @Override
+    public void loadCircleImage(String url, int placeholder, ImageView imageView) {
+        Glide.with(imageView.getContext()).load(url).placeholder(placeholder)
+                .transform(new GlideCircleTransform(imageView.getContext()))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+    }
+
+    @Override
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, int borderWidth, int borderColor) {
+        Glide.with(imageView.getContext()).load(url).placeholder(placeholder)
+                .transform(new GlideCircleTransform(imageView.getContext(), borderWidth, borderColor))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+    }
+
+    @Override
     public void loadImageWithAppCxt(String url, ImageView imageView) {
-        Glide.with(imageView.getContext().getApplicationContext()).load(url).dontAnimate()
+        Glide.with(imageView.getContext().getApplicationContext()).load(url)
                 .placeholder(imageView.getDrawable())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
@@ -84,7 +99,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                     }
                 });
             }
-        })).load(url).skipMemoryCache(true).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).
+        })).load(url).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.SOURCE).
                 listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -103,7 +118,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
 
     @Override
     public void loadGifWithPrepareCall(String url, ImageView imageView, final SourceReadyListener listener) {
-        Glide.with(imageView.getContext()).load(url).asGif().dontAnimate()
+        Glide.with(imageView.getContext()).load(url).asGif()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).
                 listener(new RequestListener<String, GifDrawable>() {
@@ -114,7 +129,27 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
 
                     @Override
                     public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        listener.onResourceReady(resource.getIntrinsicWidth(),resource.getIntrinsicHeight());
+                        listener.onResourceReady(resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
+                        return false;
+                    }
+                }).into(imageView);
+    }
+
+    @Override
+    public void loadImageWithPrepareCall(String url, ImageView imageView, int placeholder, final SourceReadyListener listener) {
+        Glide.with(imageView.getContext()).load(url)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .placeholder(placeholder)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        listener.onResourceReady(resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
                         return false;
                     }
                 }).into(imageView);
@@ -230,7 +265,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
         //去掉动画 解决与CircleImageView冲突的问题 这个只是其中的一个解决方案
         //使用SOURCE 图片load结束再显示而不是先显示缩略图再显示最终的图片（导致图片大小不一致变化）
         final long startTime = System.currentTimeMillis();
-        Glide.with(ctx).load(url).dontAnimate()
+        Glide.with(ctx).load(url)
                 .placeholder(placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).listener(new RequestListener<String, GlideDrawable>() {
             @Override
@@ -251,7 +286,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
      */
     private void loadGif(final Context ctx, String url, int placeholder, ImageView imageView) {
         final long startTime = System.currentTimeMillis();
-        Glide.with(ctx).load(url).asGif().dontAnimate()
+        Glide.with(ctx).load(url).asGif()
                 .placeholder(placeholder).skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).listener(new RequestListener<String, GifDrawable>() {
             @Override

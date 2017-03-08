@@ -1,4 +1,4 @@
-package com.baofeng.soulrelay.utils.imageloader;
+package com.baofeng.soulrelay.utils.imageloader.listener;
 
 /**
  * 图片保存监听器

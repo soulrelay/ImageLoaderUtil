@@ -1,4 +1,4 @@
-package com.baofeng.soulrelay.utils.imageloader;
+package com.baofeng.soulrelay.utils.imageloader.listener;
 
 /**
  * 通知准备就绪

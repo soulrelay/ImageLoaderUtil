@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.baofeng.soulrelay.utils.imageloader.glideprogress.ProgressLoadListener;
+import com.baofeng.soulrelay.utils.imageloader.listener.ImageSaveListener;
+import com.baofeng.soulrelay.utils.imageloader.listener.SourceReadyListener;
 
 
 /**
@@ -57,6 +59,14 @@ public class ImageLoaderUtil {
         mStrategy.loadGifImage(url, placeholder, imageView);
     }
 
+    public void loadCircleImage(String url, int placeholder, ImageView imageView) {
+        mStrategy.loadCircleImage(url,placeholder,imageView);
+    }
+
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, int borderWidth, int borderColor) {
+        mStrategy.loadCircleBorderImage(url, placeholder, imageView, borderWidth, borderColor);
+    }
+
     public void loadImage(String url, ImageView imageView) {
         mStrategy.loadImage(url, imageView);
     }
@@ -71,6 +81,10 @@ public class ImageLoaderUtil {
 
     public void loadGifWithPrepareCall(String url, ImageView imageView, SourceReadyListener listener) {
         mStrategy.loadGifWithPrepareCall(url,imageView,listener);
+    }
+
+    public void loadImageWithPrepareCall(String url, ImageView imageView,int placeholder, SourceReadyListener listener) {
+        mStrategy.loadImageWithPrepareCall(url, imageView, placeholder, listener);
     }
 
     /**
