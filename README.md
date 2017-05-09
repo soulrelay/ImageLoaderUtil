@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 效果图如下所示：
-![这里写图片描述](http://img.blog.csdn.net/20161202172529289)
+![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/20170509.gif)
 ### <font color=#ff9866 size=4 face="黑体">使用策略模式封装图片加载策略</font>
 如果你对策略模式不是很熟，请先参考[策略模式和状态模式](http://blog.csdn.net/s003603u/article/details/52033391)
 首先我们需要抽象出一个图片加载的基础接口BaseImageLoaderStrategy 
@@ -843,3 +843,4 @@ ImageLoaderUtil.getInstance().saveImage(getActivity(), url,
 >* 之前加载圆形图片，一般都是采用自定义的CircleImageview。后来开始使用Glide加载图片，期间遇到Glide和CircleImageview使用冲突的问题（如：有的图片第一次加载的时候只显示占位图，第二次才显示正常的图片，以及CircleImageview带来的崩溃问题），当时采用了一个牺牲动画效果的解决方案
 >* 既然已经全面使用Glide，那么就尽量基于Glide来完成加载圆形图片的方案
 >* 具体方案请参考[Glide圆形图片加载封装](http://blog.csdn.net/s003603u/article/details/60880308)
+### <font color=#ff9866 size=4 face="黑体">2017-05-09 ll   圆形图片加载优化，更新简单使用案例
