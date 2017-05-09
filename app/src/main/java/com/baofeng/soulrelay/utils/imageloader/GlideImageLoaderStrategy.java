@@ -62,17 +62,25 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
 
     @Override
     public void loadCircleImage(String url, int placeholder, ImageView imageView) {
-        Glide.with(imageView.getContext()).load(url).placeholder(placeholder)
+        Glide.with(imageView.getContext()).load(url).placeholder(placeholder).dontAnimate()
                 .transform(new GlideCircleTransform(imageView.getContext()))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
     }
 
     @Override
-    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, int borderWidth, int borderColor) {
-        Glide.with(imageView.getContext()).load(url).placeholder(placeholder)
-                .transform(new GlideCircleTransform(imageView.getContext(), borderWidth, borderColor))
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, float borderWidth, int borderColor) {
+        Glide.with(imageView.getContext()).load(url).placeholder(placeholder).dontAnimate()
+                .transform(new GlideCircleTransform(imageView.getContext(),borderWidth,borderColor))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
     }
+
+    @Override
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, float borderWidth, int borderColor, int heightPx, int widthPx) {
+        Glide.with(imageView.getContext()).load(url).placeholder(placeholder).dontAnimate()
+                .transform(new GlideCircleTransform(imageView.getContext(),borderWidth,borderColor,heightPx,widthPx))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+    }
+
 
     @Override
     public void loadImageWithAppCxt(String url, ImageView imageView) {

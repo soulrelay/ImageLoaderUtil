@@ -63,8 +63,12 @@ public class ImageLoaderUtil {
         mStrategy.loadCircleImage(url,placeholder,imageView);
     }
 
-    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, int borderWidth, int borderColor) {
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, float borderWidth, int borderColor) {
         mStrategy.loadCircleBorderImage(url, placeholder, imageView, borderWidth, borderColor);
+    }
+
+    public void loadCircleBorderImage(String url, int placeholder, ImageView imageView, float borderWidth, int borderColor, int heightPX,int widthPX) {
+        mStrategy.loadCircleBorderImage(url, placeholder, imageView, borderWidth, borderColor, heightPX,widthPX);
     }
 
     public void loadImage(String url, ImageView imageView) {

@@ -8,27 +8,49 @@
 
     <ImageView
         android:id="@+id/iv_normal"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:src="@drawable/bg_default_video_common_small" />
 
     <ImageView
         android:id="@+id/iv_gif"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_below="@+id/iv_normal"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:src="@drawable/bg_default_video_common_small" />
 
     <ImageView
-        android:id="@+id/iv_gif1"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:id="@+id/iv_circle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/iv_gif"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/bg_default_video_common_small" />
+        android:src="@drawable/avata_default"
+        />
+    <ImageView
+        android:id="@+id/iv_circle1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/iv_circle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/avata_default"
+        />
+
+    <TextView
+        android:id="@+id/tv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_circle1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="更多应用请关注\nhttps://github.com/soulrelay/Gallery\n图片加载库的最新更新请关注\nhttps://github.com/soulrelay/ImageLoaderUtil
+"
+        />
 </RelativeLayout>
