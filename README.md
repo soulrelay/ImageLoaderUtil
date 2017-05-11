@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 效果图如下所示：
-![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/20170509.gif)
+![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/pic_20170509.gif)
 ### <font color=#ff9866 size=4 face="黑体">使用策略模式封装图片加载策略</font>
 如果你对策略模式不是很熟，请先参考[策略模式和状态模式](http://blog.csdn.net/s003603u/article/details/52033391)
 首先我们需要抽象出一个图片加载的基础接口BaseImageLoaderStrategy 
