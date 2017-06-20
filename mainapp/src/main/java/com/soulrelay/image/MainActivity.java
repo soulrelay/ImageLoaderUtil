@@ -1,7 +1,7 @@
-package com.baofeng.soulrelay;
+package com.soulrelay.image;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.baofeng.soulrelay.utils.CommonUtils;
@@ -43,3 +43,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
