@@ -30,7 +30,7 @@ dependencies {
 ```
 
 
-![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/catalog.png)
+![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/imagelib/src/main/res/raw/catalog.png)
 
 ## <font color=#C4573C size=5 face="黑体">前言</font>
 >* 图片加载是Android开发中最最基础的功能，为了降低开发周期和难度，我们经常会选用一些图片加载的开源库
