@@ -11,6 +11,25 @@
 
 ----------------------------------分隔线---------------------------------------
 
+## <font color=#C4573C size=5 face="黑体">Use Gradle</font>
+```
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            name 'glide-snapshot'
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+}
+
+dependencies {
+    //compile project(':imagelib')
+    compile 'com.sus.library:imagelib:1.0.0'
+}
+```
+
+
 ![这里写图片描述](https://github.com/soulrelay/ImageLoaderUtil/blob/master/app/src/main/res/raw/catalog.png)
 
 ## <font color=#C4573C size=5 face="黑体">前言</font>
