@@ -31,5 +31,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile project(':imagelib')
+
+    //compile project(':imagelib')
+    compile 'com.sus.library:imagelib:1.0.0'
 }
