@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 自定义GlideModule -->
+        <meta-data
+            android:name="com.baofeng.soulrelay.utils.imageloader.MyGlideModule"
+            android:value="GlideModule" />
+        <!-- 自定义GlideModule -->
     </application>
 
 </manifest>
