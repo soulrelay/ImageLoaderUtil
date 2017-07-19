@@ -25,7 +25,7 @@ allprojects {
 
 dependencies {
     //compile project(':imagelib')
-    compile 'com.sus.library:imagelib:1.0.0'
+    compile 'com.sus.library:imagelib:1.0.1'
 }
 ```
 
